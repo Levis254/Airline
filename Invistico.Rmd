@@ -1,0 +1,34 @@
+---
+title: "Airline Data analysis"
+output: html_document
+date: "2023-08-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Invistico<-read.csv("Invistico_Airline.csv") #read the data set into R environment
+head(Invistico) #list first 6 rows of the data set
+str(Invistico) #Check the structure of the data
+New_Invistico<-Invistico %>% na.omit() #omit all the missing values
+
+```
+
+```{r}
+#Visualize the relationship between late arrival and flight distance
+New_Invistico %>%ggplot(aes(x = Flight.Distance, y = Arrival.Delay.in.Minutes)) +
+  geom_point(color = "blue") +
+  labs(title = "Flight Distance vs. Arrival Delay",
+       x = "Flight Distance",
+       y = "Arrival Delay (minutes)")
+
+cor.test(New_Invistico$Flight.Distance,New_Invistico$Arrival.Delay.in.Minutes)
+```
+There is no meaningful relationship between the two variables. A correlation test further reveals that the relationship between the two variables is statistically significant, at least at the 5% level of significance. Although, an increase in flight distance is associated with an increase in arrival delay, even though the relationship is weak.
+
+```{r}
+
+```
+
