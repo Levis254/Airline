@@ -29,6 +29,34 @@ cor.test(New_Invistico$Flight.Distance,New_Invistico$Arrival.Delay.in.Minutes)
 There is no meaningful relationship between the two variables. A correlation test further reveals that the relationship between the two variables is statistically significant, at least at the 5% level of significance. Although, an increase in flight distance is associated with an increase in arrival delay, even though the relationship is weak.
 
 ```{r}
-
+New_Invistico %>% ggplot(aes(x = satisfaction, fill = Class)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Satisfaction by Class",
+       x = "Satisfaction",
+       y = "Count",
+       fill = "Class")
 ```
 
+Most respondents claiming to be satisfied are generally flying the business class. The persons claiming dissatisfaction are mostly in the Eco class.
+
+```{r}
+New_Invistico %>% ggplot(aes(x = satisfaction, fill = Gender)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Satisfaction by Gender",
+       x = "Satisfaction",
+       y = "Count",
+       fill = "Gender")
+```
+Females report more satisfaction compared to males and more males reporting dissatisfaction compared to females. As such, it is intuitive to explore if there is a relationship between gender and the class one flies.
+
+
+```{r}
+New_Invistico %>% ggplot(aes(x = Gender, fill = Class)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Gender by Class",
+       x = "Gender",
+       y = "Count",
+       fill = "Class")
+```
+
+Both genders tend to fly all classes at almost the same proportions. Therefore, no gender has preferences to a particular class of flights. 
