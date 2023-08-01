@@ -60,3 +60,21 @@ New_Invistico %>% ggplot(aes(x = Gender, fill = Class)) +
 ```
 
 Both genders tend to fly all classes at almost the same proportions. Therefore, no gender has preferences to a particular class of flights. 
+
+
+```{r}
+## For the following section, we attempt to develop a prediction model for satisfaction based on cleanliness, ease of online booking, food and drink, inflight entertainment, inflight wifi service, leg room, on-board service, online support and seat comfort.
+
+predictor_vars <- c("Seat.comfort","Departure.Arrival.time.convenient","Food.and.drink","Gate.location", "Inflight.wifi.service", "Inflight.entertainment", "Online.support","Ease.of.Online.booking", "On.board.service", "Leg.room.service", "Baggage.handling","Checkin.service","Cleanliness","Online.boarding")
+
+New_Invistico$satisfaction <- factor(New_Invistico$satisfaction,levels = c("dissatisfied", "neutral", "satisfied"), labels = c(0, 1, 2))
+
+levels(New_Invistico$satisfaction)
+
+#Train-Test Split
+set.seed(42) # For reproducibility
+train_index <- createDataPartition(New_Invistico$satisfaction, p = 0.7, list = FALSE)
+train_data <- New_Invistico[train_index, ]
+test_data <- New_Invistico[-train_index, ]
+```
+
