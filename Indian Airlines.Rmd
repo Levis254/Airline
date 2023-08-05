@@ -23,4 +23,28 @@ sum(is.na(data)) #check for missing values
 data[duplicated(data),] #check for duplicates
 
 ```
+```{r}
+#Number of flights operated by each airline
+
+# Count the number of flights operated by each airline
+airline_counts <- table(data$airline)
+
+# Define the color palette
+colors <- c("#D5DDDF", "#0B666A", "#35A29F", "#97FEED", "#6B8E4E","#3C5148")
+
+# Convert the counts to a data frame for plotting
+airline_counts_df <- data.frame(airline = names(airline_counts), count = as.numeric(airline_counts))
+
+# Sort the data frame by the count in descending order
+airline_counts_df <- airline_counts_df[order(airline_counts_df$count, decreasing = TRUE), ]
+
+# Create a bar chart
+ggplot(data = airline_counts_df, aes(x = airline, y = count)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Number of Flights Operated by Each Airline",
+       x = "Airline",
+       y = "Number of Flights") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_discrete(name = "Airline")
+```
 
