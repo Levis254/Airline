@@ -1,0 +1,16 @@
+---
+title: "Indian Airlines"
+output: html_document
+date: "2023-08-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data<-read.csv("Indian Airlines.csv")
+head(data)
+str(data)
+```
+
