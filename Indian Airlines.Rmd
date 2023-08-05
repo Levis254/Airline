@@ -8,6 +8,7 @@ date: "2023-08-05"
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
+library(gridExtra)
 ```
 
 ```{r}
@@ -46,5 +47,120 @@ ggplot(data = airline_counts_df, aes(x = airline, y = count)) +
        y = "Number of Flights") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_discrete(name = "Airline")
+```
+
+
+```{r}
+# Create a strip plot to show price range according to class of travel
+ggplot(data, aes(x = class, y = price)) +
+  geom_jitter(width = 0.2, alpha = 0.7) +
+  labs(title = "Price Range by Class of Travel",
+       x = "Class of Travel",
+       y = "Price",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
+  
+```
+
+
+```{r}
+# Create a count plot to show availability of tickets according to class of travel
+ggplot(data, aes(x = class, fill = class)) +
+  geom_bar() +
+  labs(title = "Availability of Tickets by Class of Travel",
+       x = "Class of Travel",
+       y = "Number of Tickets",
+       fill = "Class of Travel",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
+```
+
+```{r}
+# Create a scatter plot to show the price of tickets for different airlines based on duration of flight
+ggplot(data, aes(x = duration, y = price, color = airline)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(title = "Price of Ticket vs. Duration of Flight by Airline",
+       x = "Duration of Flight (hours)",
+       y = "Price of Ticket",
+       color = "Airline",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
+```
+
+```{r}
+# Calculate the average ticket prices for each combination of airline and class
+average_prices <- aggregate(price ~ airline + class, data, mean)
+
+# Create a bar plot to show how ticket prices vary across different airlines and class of travel
+ggplot(average_prices, aes(x = airline, y = price, fill = class)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Ticket Prices across Different Airlines and Class of Travel",
+       x = "Airline",
+       y = "Average Ticket Price",
+       fill = "Class of Travel",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
+```
+
+```{r}
+# Group the data by the number of days left before departure and calculate the average ticket prices
+average_prices_by_days <- data %>%
+  group_by(days_left) %>%
+  summarise(average_price = mean(price))
+
+# Create a line plot to show how airline ticket prices vary depending on when you buy them
+ggplot(average_prices_by_days, aes(x = days_left, y = average_price)) +
+  geom_line() +
+  labs(title = "Airline Ticket Prices by Number of Days Left Before Departure",
+       x = "Number of Days Left Before Departure",
+       y = "Average Ticket Price",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
+```
+```{r}
+# Group the data by duration of the flight and calculate the average ticket prices
+average_prices_by_duration <- data %>%
+  group_by(duration) %>%
+  summarise(average_price = mean(price))
+
+# Create a scatter plot to show how ticket price varies depending on the duration of the flight
+ggplot(average_prices_by_duration, aes(x = duration, y = average_price)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(title = "Ticket Price vs. Duration of Flight",
+       x = "Duration of Flight (hours)",
+       y = "Average Ticket Price",
+       caption = "Data source: Your Dataset") +
+  geom_smooth(stat="smooth")+
+  theme_minimal()
+```
+
+```{r}
+# Create the first box plot
+plot1 <- ggplot(data, aes(x = departure_time, y = price)) +
+  geom_boxplot() +
+  labs(x = 'Departure Time', y = 'Price of Ticket', title = 'Price of Ticket depending on time of departure') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create the second box plot
+plot2 <- ggplot(data, aes(x = arrival_time, y = price)) +
+  geom_boxplot() +
+  labs(x = 'Arrival Time', y = 'Price of Ticket', title = 'Price of Ticket depending on time of arrival') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Combine the plots side by side
+combined_plots <- grid.arrange(plot1, plot2, ncol = 2)
+```
+```{r}
+# Create a grouped bar plot to show how ticket prices vary based on no. of stops and airline
+ggplot(data, aes(x = airline, y = price, fill = stops)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Ticket Price based on Number of Stops and Airline",
+       x = "Airline",
+       y = "Ticket Price",
+       fill = "stops",
+       caption = "Data source: Your Dataset") +
+  theme_minimal()
 ```
 
